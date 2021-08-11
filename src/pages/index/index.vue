@@ -1,64 +1,67 @@
 <template>
-  <view class="index">
-    <text @tap="tap">{{ msg }}</text>
-    <video
-      v-show="src"
-      id="v"
-      ref="v"
-      :src="src"
-      :controls="false"
-      :show-progress="false"
-      :show-fullscreen-btn="false"
-      :show-play-btn="false"
-      :show-center-play-btn="false"
-    />
+  <view class="container" @tap="change">
+    <scroll-view class="scroll" :scroll-y="true" :enhanced="true" :paging-enabled="true" :show-scrollbar="true" :scroll-with-animation="true" :scroll-into-view="jumpItem">
+      <view v-for="item in list" :key="item" class="item" :style="{ top: item * 100 + '%' }">
+        <video
+          class="video"
+          :src="src"
+        />
+        <view class="mask">{{Array(100).fill(item).join()}}</view>
+      </view>
+    </scroll-view>
   </view>
 </template>
 
 <script>
-import './index.less'
-import Comp from '../../components/comp'
-
-const src = `http://vxcx.weishi.qq.com/vxcx.weishi.qq.com/gzc_8165_1047_0bc3p4aboaaaiaag3i6sizqbo7yec57qaf2a.f70.mp4?dis_k=7ce2360b3780a9bdca1979f624616907&dis_t=1626854911&fromtag=0&personid=1596214208417689&pver=8.25.0&wsadapt=1596214208417689_0721160831__160236443_0_0_0_27_27_0_0_0_0_0&qua=V1_WXA_WS_3.0.0_001_IDC_NEW`
-const src2 = `http://vxcx.weishi.qq.com/vxcx.weishi.qq.com/gzc_9636_1047_0bc3qeabuaaakyap5hotjnqbpaiedkaqagsa.f70.mp4?dis_k=5a902b2fa1a3536c71305f59d546c646&dis_t=1626854911&fromtag=0&personid=1596214208417689&pver=8.26.0&wsadapt=1596214208417689_0721160831__160236443_0_0_0_27_27_0_0_0_0_0&qua=V1_WXA_WS_3.0.0_001_IDC_NEW`
-global.src1 = src
-global.src2 = src2
 
 export default {
   components: {
   },
   data () {
     return {
-      msg: 'Hello world!',
-      text: 'ssssssssssssssssssssssss',
-      src,
+      jumpItem: null,
+      list: [0,1,2,3,4],
+      src: 'http://q.weishi.qq.com/q.weishi.qq.com/szg_4521_50001_0bf2yeabaaaa2uaakjio3rqvdqodcdaqaeca.f60.mp4?dis_k=f3046bc61fe332a17a83857b9c7d0a2d&dis_t=1628665124&fromtag=0&personid=1596214208417689&pver=1.1.0&source=50001&wsadapt=1596214208417689_0811145844__160251826_0_0_0_2_25_0_0_0_0_0&qua=V1_WXA_WS_3.0.0_001_IDC_NEW'
     }
   },
-  mounted() {
-    global.c = this
-    this.ctx = wx.createVideoContext('v')
-  },
   methods: {
-    play() {
-      this.ctx.play()
-    },
-    pause() {
-      this.ctx.pause()
-    },
-    tap() {
-      toggle();
+    change() {
+      this.list = [1,2,3,4]
     }
   }
 }
-let flag = true;
-global.toggle = () => {
-  c.play();
-  setTimeout(() => { c.src='' }, 1000);
-  setTimeout(() => { c.pause() }, 1200);
-  setTimeout(() => {
-    c.src= flag ? src2 : src1
-    flag = !flag
-  }, 2200);
-}
 
 </script>
+
+<style>
+Page{
+  width: 100%;
+  height: 100vh;
+}
+.container{
+  height: 100%;
+}
+.scroll{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.item{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+}
+.video{
+  width: 100%;
+  height: 100%;
+}
+.mask{
+  position: absolute;
+  left: 0;
+  top: 100rpx;
+  color: red;
+  font-weight: bold;
+}
+</style>
